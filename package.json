@@ -1,0 +1,29 @@
+{
+  "name": "multiplayer-pong",
+  "version": "1.0.0",
+  "description": "pong game",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.9",
+    "socket.io-client": "^4.1.2",
+    "socketio": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/semdestroyer/pongsocket.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "semdestroyer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/semdestroyer/pongsocket/issues"
+  },
+  "homepage": "https://github.com/semdestroyer/pongsocket#readme"
+}

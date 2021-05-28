@@ -1,0 +1,7 @@
+class frame
+{
+    constructor(objects)
+    {
+
+    }
+}
