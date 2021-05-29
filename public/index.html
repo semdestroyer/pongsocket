@@ -6,15 +6,16 @@
     <title>Ping pong</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src='https://code.jquery.com/jquery-3.6.0.min.js'></script>
+    <script src='/index.js'></script>
     
     
 </head>
-<body  onload="init()">
-  <select multiple size="5">
+<body onload="getRooms()">
+  <select multiple size="5" id="rooms">
   </select>
   <br>
-  <input type="text" value="Player">
-  <button>Создать Комнату</button>
-  <button>Подключиться к Комнате</button>
+  <input type="text" value="Room" id="roomname">
+  <button  onclick = "createRoom()">Создать Комнату</button>
+  <button onclick = "connectRoom()">Подключиться к Комнате</button>
 </body>
 </html>
