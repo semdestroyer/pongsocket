@@ -17,11 +17,17 @@ function createRoom()
 function connectRoom()
 {
     id = document.getElementById("rooms").value;
-    document.location.href = "/api/connectRoom?" + id;
+    nickname = document.getElementById("nickname").value;
+    document.location.href = "/api/connectRoom?id=" + id + "&nickname=" + nickname;
+}
+function init()
+{
+    setInterval(getRooms,5000);
 }
 function getRooms()
 {
     const sel = document.getElementById("rooms");
+    sel.innerHTML = "";
     $.ajax({
         type:"GET",
         url:"/api/rooms",

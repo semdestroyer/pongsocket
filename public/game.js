@@ -1,23 +1,24 @@
 //import "../objects/player";
 //import "../objects/ball";
-var frameNumber = 0;
-var n = 0;
+
+
 var ctx;
 var socket;
 var cheight;
 var cwidth;
+var wait = true;
 function init()
 {  
-     socket = io();
-  
-    /*socket.connect("connect",()=>{
-      socket.send(name);  
-    });*/
+
+    socket = io();
+    let url = new URL(document.URL);
+    let id = url.searchParams.get("id");
+    let nickname = url.searchParams.get("nickname")
+    socket.emit("room_connect",{id,nickname});
     var canvas = document.getElementById("canvas");
     cwidth = canvas.getAttribute("width");
     cheight = canvas.getAttribute("height");
     ctx = canvas.getContext("2d");
-    //setInterval(render(ctx),10);
     window.requestAnimationFrame(render);
 }
 function render()
@@ -33,7 +34,8 @@ function render()
     ctx.fillStyle="white";
     ctx.fillRect(600,40,50,150);
     
-  })      
+  });
+  if(wait) waiting(ctx,0);      
 }
 function waiting(ctx,n)
 {
@@ -59,7 +61,7 @@ function waiting(ctx,n)
     text ="Waitng for players..."
     break;
   }
-  ctx.fillText(text, 400, 200);
+  ctx.fillText(text, cwidth/4, cheight/2);
     
 }
 addEventListener("keypress",function(e)

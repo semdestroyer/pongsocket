@@ -10,11 +10,12 @@
     
     
 </head>
-<body onload="getRooms()">
+<body onload="init()">
   <select multiple size="5" id="rooms">
   </select>
   <br>
   <input type="text" value="Room" id="roomname">
+  <input type="text" value="Player" id="nickname">
   <button  onclick = "createRoom()">Создать Комнату</button>
   <button onclick = "connectRoom()">Подключиться к Комнате</button>
 </body>
