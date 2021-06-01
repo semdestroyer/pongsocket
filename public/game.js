@@ -6,14 +6,16 @@ var ctx;
 var socket;
 var cheight;
 var cwidth;
+var roomid;
 var wait = true;
 function init()
 {  
 
     socket = io();
     let url = new URL(document.URL);
-    let id = url.searchParams.get("id");
+    roomid = url.searchParams.get("id");
     let nickname = url.searchParams.get("nickname")
+    let id = roomid;
     socket.emit("room_connect",{id,nickname});
     var canvas = document.getElementById("canvas");
     cwidth = canvas.getAttribute("width");
@@ -27,15 +29,19 @@ function render()
   ctx.fillRect(0,0,cwidth,cheight);
   socket.on("update", data =>
   {
+    wait = false;
     ctx.fillStyle="white";
-    ctx.fillRect(500,100,50,50);
+    ctx.fillRect(data.ball.x,data.ball.y,50,50);
     ctx.fillStyle="white";
-    ctx.fillRect(10,10,50,150);
+    ctx.fillRect(data.player1.x,data.player1.y,50,150);
     ctx.fillStyle="white";
-    ctx.fillRect(600,40,50,150);
-    
+    ctx.fillRect(data.player2.x,data.player2.y,50,150);
+    return
   });
-  if(wait) waiting(ctx,0);      
+  if(wait == true)
+  {
+    waiting(ctx,0);
+  }      
 }
 function waiting(ctx,n)
 {
@@ -66,5 +72,5 @@ function waiting(ctx,n)
 }
 addEventListener("keypress",function(e)
 {
-  socket.emit("keydown",e.keyCode);
+  socket.emit("keypress",{key:e.keyCode,id:roomid});
 });

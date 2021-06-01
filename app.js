@@ -71,26 +71,41 @@ app.get("/api/connectRoom",function(request,responce)
    
 });
 let frame = {
+  roomId:null,
   player1:{x:0,y:0},
   player2:{x:0,y:0},
   ball:{x:0,y:0}
 }
+let frames = new Map();
 io.on("connection",socket=>
 {
   socket.on("room_connect",data=>{
     socket.join(data.id);
-    //socket.id
+    
     console.log("new player " + data.nickname + " joined room " + data.id);
+    if(io.sockets.adapter.rooms[data.id].length == 2)
+    {
+      frame = {player1:{x:100,y:100},player2:{x:600,y:100},ball:{x:350,y:150}};
+      roomid = data.id
+      frames.set(roomid,frame);
+      socket.to(data.id).emit("update",frame);
+    }
   });
-  socket.on("room_ready", ready=>
-    {if(ready) socket.to().emit("start");}
-  );
+  /*
+  socket.on("update", data=>
+  {
+    frame = {player1:{x:200,y:200},player2:{x:600,y:200},ball:{x:400,y:200}};
+      if(ready) socket.to(data.id).emit(frame);
+  })*/
   console.log("user connected");
-
   socket.on("keypress",data=>
   {
-    //socket.emit("update");
-    console.log(data);
+    
+    frame = frames.get(data.id);
+   // console.log(frames);
+    frame.player1.y += 10;
+    frames.set(roomid,frame);
+    socket.to(data.id).emit("update",frame);        
   });
 
 })
