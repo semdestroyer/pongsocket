@@ -1,16 +1,12 @@
-//import "../objects/player";
-//import "../objects/ball";
-
-
+document.addEventListener("DOMContentLoaded", function() {
 var ctx;
 var socket;
 var cheight;
 var cwidth;
 var roomid;
 var wait = true;
-function init()
-{  
 
+    
     socket = io();
     let url = new URL(document.URL);
     roomid = url.searchParams.get("id");
@@ -18,26 +14,45 @@ function init()
     let id = roomid;
     socket.emit("room_connect",{id,nickname});
     var canvas = document.getElementById("canvas");
+    addEventListener("keypress", function(e)
+    {
+      socket.emit("keypress",{key:e.keyCode,id:roomid});
+    });
     cwidth = canvas.getAttribute("width");
     cheight = canvas.getAttribute("height");
     ctx = canvas.getContext("2d");
-    window.requestAnimationFrame(render);
+   
+    
+    socket.on("update", data =>
+    {
+      console.log(data);
+      drawField();
+      drawPlayer(data.player1.x,data.player1.y);
+      drawPlayer(data.player2.x,data.player2.y);
+      drawBall(data.ball.x,data.ball.y);
+  
+    });
+
+function drawPlayer(x,y)
+{
+  ctx.fillStyle="white";
+  ctx.fillRect(x,y,50,150);
 }
-function render()
+function drawField()
 {
   ctx.fillStyle="black";
   ctx.fillRect(0,0,cwidth,cheight);
-  socket.on("update", data =>
-  {
-    wait = false;
-    ctx.fillStyle="white";
-    ctx.fillRect(data.ball.x,data.ball.y,50,50);
-    ctx.fillStyle="white";
-    ctx.fillRect(data.player1.x,data.player1.y,50,150);
-    ctx.fillStyle="white";
-    ctx.fillRect(data.player2.x,data.player2.y,50,150);
-    return
-  });
+}
+function drawBall(x,y)
+{
+  ctx.fillStyle="white";
+  ctx.fillRect(x,y,50,50);
+}
+
+function render()
+{
+  
+    
   if(wait == true)
   {
     waiting(ctx,0);
@@ -70,7 +85,5 @@ function waiting(ctx,n)
   ctx.fillText(text, cwidth/4, cheight/2);
     
 }
-addEventListener("keypress",function(e)
-{
-  socket.emit("keypress",{key:e.keyCode,id:roomid});
+
 });

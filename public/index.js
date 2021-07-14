@@ -13,16 +13,13 @@ function createRoom()
         success: function (data) {}
         
     });
+    getRooms();
 }
 function connectRoom()
 {
     id = document.getElementById("rooms").value;
     nickname = document.getElementById("nickname").value;
     document.location.href = "/api/connectRoom?id=" + id + "&nickname=" + nickname;
-}
-function init()
-{
-    setInterval(getRooms,5000);
 }
 function getRooms()
 {
